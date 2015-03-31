@@ -1,69 +1,71 @@
 package com.example.tawfiq.run4life;
 
-
 import android.app.Service;
 import android.content.Intent;
-import android.os.Binder;
-import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
-import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-public class MyService extends Service  {
-
-    protected static final String TAG = "MainService - Run4Life";
-    // Binder given to clients
-    private final IBinder mBinder = new LocalBinder();
-    // Random number generator
-    private final Random mGenerator = new Random();
+public class MyService extends Service {
 
 
     public MyService() {
-
-
+        Log.i(TAG, "constructor service called");
     }
 
-    /**
-     * Class used for the client Binder.  Because we know this service always
-     * runs in the same process as its clients, we don't need to deal with IPC.
-     */
-    public class LocalBinder extends Binder implements ConnectionCallbacks,
-            OnConnectionFailedListener {
-        MyService getService() {
-            // Return this instance of LocalService so clients can call public methods
-            return MyService.this;
+
+
+
+    protected static final String TAG = "Service - Run4Life";
+
+
+
+    // Random number generator
+    private static final Random mGenerator = new Random();
+
+    //lisst for testing
+    static List<Integer> numbers = new ArrayList<>();
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if (intent.getAction().equals(Constants.ACTION.STARTFOREGROUND_ACTION)) {
+            Log.i(TAG, "Received Start Foreground Intent ");
+            Intent notificationIntent = new Intent(this, MainActivity.class);
+            notificationIntent.setAction(Constants.ACTION.MAIN_ACTION);
+            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        } else if (intent.getAction().equals(
+                Constants.ACTION.STOPFOREGROUND_ACTION)) {
+            Log.i(TAG, "Received Stop Foreground Intent");
+            stopForeground(true);
+            stopSelf();
         }
-
-        @Override
-        public void onConnected(Bundle bundle) {
-
-        }
-
-        @Override
-        public void onConnectionSuspended(int i) {
-
-        }
-
-        @Override
-        public void onConnectionFailed(ConnectionResult connectionResult) {
-
-        }
+        return START_STICKY;
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "In onDestroy");
+    }
+
+
+
+
+
     @Override
     public IBinder onBind(Intent intent) {
-        return mBinder;
+        // Used only in case of bound services.
+        return null;
     }
+
     /** method for clients */
-    public int getRandomNumber() {
-        return mGenerator.nextInt(100);
+    public static int getRandomNumber() {
+        numbers.add(mGenerator.nextInt(100));
+        return numbers.size();
     }
-
-
-
-
-
 }
