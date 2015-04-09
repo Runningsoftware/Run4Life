@@ -65,7 +65,7 @@ public class MyService extends Service implements  GoogleApiClient.ConnectionCal
      */
     protected static Location mCurrentLocation = null;
 
-    protected double distance_per_section = 0;
+    protected static double distance_per_section = 0;
     /**
      * total distance
      */
@@ -79,7 +79,7 @@ public class MyService extends Service implements  GoogleApiClient.ConnectionCal
     protected boolean isLocationUpdating = false;
 
 
-    protected String FOREGROUND_TEXTVIEW = "Distance: " + TotalDistance;
+    protected String FOREGROUND_TEXTVIEW = "Distance: " + (TotalDistance + distance_per_section);
 
 
     public MyService() {
@@ -126,7 +126,7 @@ public class MyService extends Service implements  GoogleApiClient.ConnectionCal
         builder = new NotificationCompat.Builder(this)
                 .setContentTitle("Run4Life")
                 .setTicker("Run4Life")
-                .setContentText("Run Updates")
+                .setContentText(FOREGROUND_TEXTVIEW)
                 .setSmallIcon(R.drawable.icontwitter24x24)
                 .setLargeIcon(
                         Bitmap.createScaledBitmap(icon, 128, 128, false))
@@ -146,6 +146,10 @@ public class MyService extends Service implements  GoogleApiClient.ConnectionCal
             {
                 Log.i(TAG, "Received Start Foreground Intent ");
                 mStatus = Status.RUNNING;
+                TotalDistance = 0;
+                distance_per_section = 0;
+                mCurrentLocation = null;
+                mCurrentLocation = null;
                 if(!isLocationUpdating)
                 {
                      //start requesting location update
@@ -155,7 +159,7 @@ public class MyService extends Service implements  GoogleApiClient.ConnectionCal
                 builder = new NotificationCompat.Builder(this)
                         .setContentTitle("Run4Life")
                         .setTicker("Run4Life")
-                        .setContentText("Run Updates")
+                        .setContentText(FOREGROUND_TEXTVIEW)
                         .setSmallIcon(R.drawable.icontwitter24x24)
                         .setLargeIcon(
                                 Bitmap.createScaledBitmap(icon, 128, 128, false))
@@ -226,6 +230,7 @@ public class MyService extends Service implements  GoogleApiClient.ConnectionCal
 
                 stopLocationUpdates();
                 stopForeground(true);
+
 
             }
 
@@ -311,13 +316,13 @@ public class MyService extends Service implements  GoogleApiClient.ConnectionCal
            if(tempdistance > distance_per_section)
            {
                distance_per_section = tempdistance;
-               TotalDistance = TotalDistance + distance_per_section;
-               builder.setContentText(FOREGROUND_TEXTVIEW);
-               notification = builder.build();
+
+              // builder.setContentText(FOREGROUND_TEXTVIEW);
+              // notification = builder.build();
                startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE,
                        notification);
-               if (distance_per_section > 100) {
-
+               if (distance_per_section > 200) {
+                   TotalDistance = TotalDistance + distance_per_section;
                    distance_per_section = 0;
 
                    mCurrentLocation = location;
@@ -400,9 +405,7 @@ public class MyService extends Service implements  GoogleApiClient.ConnectionCal
         if(isLocationUpdating)
         {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-            mCurrentLocation = null;
-            TotalDistance = 0;
-            distance_per_section = 0;
+
             isLocationUpdating = false;
         }
     }
@@ -417,7 +420,7 @@ public class MyService extends Service implements  GoogleApiClient.ConnectionCal
             return 100.0;
     }
 
-    public static double getTotalDistance(){return TotalDistance;}
+    public static double getTotalDistance(){return TotalDistance + distance_per_section;}
 
     public static Status getmStatus(){
         Log.i(TAG, "calling getstatus");
