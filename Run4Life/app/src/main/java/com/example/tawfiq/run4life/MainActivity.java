@@ -1,7 +1,9 @@
 package com.example.tawfiq.run4life;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,7 +21,7 @@ public class MainActivity extends Activity {
 
     protected static final String TAG = "MainActivity - Run4Life";
 
-
+    protected static SQLiteDatabase db ;
 
     Status mStatus = Status.NOT_STARTED;
 
@@ -39,8 +41,21 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        db = openOrCreateDatabase("Run4Life", Context.MODE_PRIVATE, null);
+        MyService.SetDataBase(db);
+
         setupUI();
 
+
+       // Profile temp = new Profile("Tawfiq", 21,70,178,"M");
+       // MyService.saveProfile(temp);
+        Profile temp = MyService.getUser();
+       if(temp == null)
+        {
+            Intent myIntent = new Intent(MainActivity.this, ProfileActivity.class);
+
+            MainActivity.this.startActivity(myIntent);
+        }
 
     }
 

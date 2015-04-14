@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
@@ -25,9 +26,14 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MyService extends Service implements  GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
+public final class MyService extends Service implements  GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
+    protected static final String TAG = "Service - Run4Life";
 
+    static protected Profile mUser = null;
+
+    protected static SQLiteDatabase db ;
+    protected static DBHandler dbHandler = null;
     Notification notification = null;
     NotificationCompat.Builder builder = null;
 
@@ -81,15 +87,25 @@ public class MyService extends Service implements  GoogleApiClient.ConnectionCal
 
     protected String FOREGROUND_TEXTVIEW = "Distance: " + (TotalDistance + distance_per_section);
 
+    public MyService()
+    {
 
-    public MyService() {
+    }
+    public MyService(SQLiteDatabase database) {
+
         Log.i(TAG, "constructor service called");
 
     }
 
 
+    public static void SetDataBase(SQLiteDatabase database)
+    {
+        if(db == null)
+            db = database;
+        Log.i(TAG, "set database called");
+    }
 
-    protected static final String TAG = "Service - Run4Life";
+
 
 
 
@@ -121,13 +137,13 @@ public class MyService extends Service implements  GoogleApiClient.ConnectionCal
         PendingIntent pstopIntent = PendingIntent.getService(this, 0,
                 stopIntent, 0);
         Bitmap icon = BitmapFactory.decodeResource(getResources(),
-                R.drawable.icontwitter24x24);
+                R.drawable.run4lifelogo);
 
         builder = new NotificationCompat.Builder(this)
                 .setContentTitle("Run4Life")
                 .setTicker("Run4Life")
                 .setContentText(FOREGROUND_TEXTVIEW)
-                .setSmallIcon(R.drawable.icontwitter24x24)
+                .setSmallIcon(R.drawable.run4lifelogo24x24)
                 .setLargeIcon(
                         Bitmap.createScaledBitmap(icon, 128, 128, false))
                 .setContentIntent(pendingIntent)
@@ -160,7 +176,7 @@ public class MyService extends Service implements  GoogleApiClient.ConnectionCal
                         .setContentTitle("Run4Life")
                         .setTicker("Run4Life")
                         .setContentText(FOREGROUND_TEXTVIEW)
-                        .setSmallIcon(R.drawable.icontwitter24x24)
+                        .setSmallIcon(R.drawable.run4lifelogo24x24)
                         .setLargeIcon(
                                 Bitmap.createScaledBitmap(icon, 128, 128, false))
                         .setContentIntent(pendingIntent)
@@ -182,7 +198,7 @@ public class MyService extends Service implements  GoogleApiClient.ConnectionCal
                         .setContentTitle("Run4Life")
                         .setTicker("Run4Life")
                         .setContentText(FOREGROUND_TEXTVIEW)
-                        .setSmallIcon(R.drawable.icontwitter24x24)
+                        .setSmallIcon(R.drawable.run4lifelogo24x24)
                         .setLargeIcon(
                                 Bitmap.createScaledBitmap(icon, 128, 128, false))
                         .setContentIntent(pendingIntent)
@@ -205,7 +221,7 @@ public class MyService extends Service implements  GoogleApiClient.ConnectionCal
                         .setContentTitle("Run4Life")
                         .setTicker("Run4Life")
                         .setContentText(FOREGROUND_TEXTVIEW)
-                        .setSmallIcon(R.drawable.icontwitter24x24)
+                        .setSmallIcon(R.drawable.run4lifelogo24x24)
                         .setLargeIcon(
                                 Bitmap.createScaledBitmap(icon, 128, 128, false))
                         .setContentIntent(pendingIntent)
@@ -423,6 +439,28 @@ public class MyService extends Service implements  GoogleApiClient.ConnectionCal
     public static double getTotalDistance(){return TotalDistance + distance_per_section;}
 
     public static Status getmStatus(){
-        Log.i(TAG, "calling getstatus");
+        Log.i(TAG, "calling getStatus");
         return  mStatus;}
+
+
+    public static Profile getUser()
+    {
+        if(dbHandler == null)
+            dbHandler = new DBHandler(db);
+
+           // dbHandler.create();
+            mUser = dbHandler.loadProfile();
+            return mUser;
+
+    }
+
+    public static void saveProfile(Profile user)
+    {
+        if(dbHandler == null)
+            dbHandler = new DBHandler(db);
+       // dbHandler.create();
+        dbHandler.saveProfile(user);
+
+    }
+
 }

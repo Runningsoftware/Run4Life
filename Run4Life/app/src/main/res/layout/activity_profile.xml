@@ -33,20 +33,20 @@
                         android:id="@+id/nameHeader"
                         android:textSize="25dp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <EditText
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Samir"
-                        android:id="@+id/nameValue"
-                        android:textSize="35dp"
-                        android:layout_gravity="center|bottom" />
+                        android:inputType="textPersonName"
+                        android:ems="10"
+                        android:id="@+id/NameEditText" />
+
                 </LinearLayout>
 
                 <LinearLayout
                     android:orientation="vertical"
-                    android:layout_width="fill_parent"
+                    android:layout_width="123dp"
                     android:layout_height="fill_parent"
-                    android:layout_weight="0.5">
+                    android:weightSum="1">
 
                     <TextView
                         android:layout_width="fill_parent"
@@ -55,16 +55,47 @@
                         android:id="@+id/genderHeader"
                         android:textSize="25dp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <Switch
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Male"
-                        android:id="@+id/genderValue"
-                        android:textSize="35dp"
-                        android:layout_gravity="center" />
+                        android:id="@+id/genderSwitch"
+                        android:layout_marginTop="20dp"
+                        android:checked="false"
+                        android:shadowColor="@color/background_material_light" />
+
                 </LinearLayout>
             </LinearLayout>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.25">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.5">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Age"
+                    android:id="@+id/AgeHeader"
+                    android:textSize="25dp" />
+
+                <EditText
+                    android:layout_width="119dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:ems="10"
+                    android:id="@+id/AgeEditText" />
+
+
+
+            </LinearLayout>
+
+            </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -85,36 +116,56 @@
                         android:id="@+id/weightHeader"
                         android:textSize="25dp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <EditText
+                        android:layout_width="104dp"
                         android:layout_height="wrap_content"
-                        android:text="175"
-                        android:id="@+id/weightValue"
-                        android:textSize="35dp"
-                        android:layout_gravity="center" />
+                        android:inputType="number"
+                        android:ems="10"
+                        android:id="@+id/WeightEditText" />
+
+                    <TextView
+                        android:layout_width="48dp"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="KG"
+                        android:id="@+id/textView4"
+                        android:layout_marginTop="-30dp"
+                        android:layout_marginLeft="110dp" />
+
                 </LinearLayout>
 
                 <LinearLayout
-                    android:orientation="vertical"
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.5">
+
+                <TextView
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="0.5">
+                    android:layout_height="wrap_content"
+                    android:text="Height"
+                    android:id="@+id/heightHeader"
+                    android:textSize="25dp" />
 
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Height"
-                        android:id="@+id/heightHeader"
-                        android:textSize="25dp" />
+                <EditText
+                    android:layout_width="119dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:ems="10"
+                    android:id="@+id/HeightEditText" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="90"
-                        android:id="@+id/heightValue"
-                        android:textSize="35dp"
-                        android:layout_gravity="center" />
-                </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="cm"
+                    android:id="@+id/textView5"
+                    android:layout_marginLeft="130dp"
+                    android:layout_marginTop="-30dp" />
+
+            </LinearLayout>
+
+
             </LinearLayout>
 
             <LinearLayout
@@ -140,10 +191,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="30.2"
                         android:id="@+id/bmiValue"
-                        android:textSize="35dp"
-                        android:layout_gravity="center" />
+                        android:textSize="35dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -162,7 +211,6 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="2100"
                         android:id="@+id/bmrValue"
                         android:textSize="35dp"
                         android:layout_gravity="center" />
@@ -173,8 +221,9 @@
                 android:layout_width="118dp"
                 android:layout_height="69dp"
                 android:text="SAVE"
-                android:id="@+id/button_save_profile"
-                android:layout_gravity="center_horizontal" />
+                android:id="@+id/saveButton"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="0dp" />
         </LinearLayout>
 
 
