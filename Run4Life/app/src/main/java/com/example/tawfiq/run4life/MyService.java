@@ -89,7 +89,7 @@ public final class MyService extends Service implements  GoogleApiClient.Connect
 
     protected String mDateID;
     protected double mAvgSpeed =0;
-    protected String FOREGROUND_TEXTVIEW = "Distance: " + (TotalDistance + distance_per_section)/1000;
+    protected String FOREGROUND_TEXTVIEW = "Distance: " ;
 
     public MyService()
     {
@@ -146,7 +146,7 @@ public final class MyService extends Service implements  GoogleApiClient.Connect
         builder = new NotificationCompat.Builder(this)
                 .setContentTitle("Run4Life")
                 .setTicker("Run4Life")
-                .setContentText(FOREGROUND_TEXTVIEW)
+                .setContentText(FOREGROUND_TEXTVIEW + (TotalDistance + distance_per_section)/1000)
                 .setSmallIcon(R.drawable.run4lifelogo24x24)
                 .setLargeIcon(
                         Bitmap.createScaledBitmap(icon, 128, 128, false))
@@ -182,7 +182,7 @@ public final class MyService extends Service implements  GoogleApiClient.Connect
                 builder = new NotificationCompat.Builder(this)
                         .setContentTitle("Run4Life")
                         .setTicker("Run4Life")
-                        .setContentText(FOREGROUND_TEXTVIEW)
+                        .setContentText(FOREGROUND_TEXTVIEW + (TotalDistance + distance_per_section)/1000)
                         .setSmallIcon(R.drawable.run4lifelogo24x24)
                         .setLargeIcon(
                                 Bitmap.createScaledBitmap(icon, 128, 128, false))
@@ -208,7 +208,7 @@ public final class MyService extends Service implements  GoogleApiClient.Connect
                 builder = new NotificationCompat.Builder(this)
                         .setContentTitle("Run4Life")
                         .setTicker("Run4Life")
-                        .setContentText(FOREGROUND_TEXTVIEW)
+                        .setContentText(FOREGROUND_TEXTVIEW + (TotalDistance + distance_per_section)/1000)
                         .setSmallIcon(R.drawable.run4lifelogo24x24)
                         .setLargeIcon(
                                 Bitmap.createScaledBitmap(icon, 128, 128, false))
@@ -234,7 +234,7 @@ public final class MyService extends Service implements  GoogleApiClient.Connect
                 builder = new NotificationCompat.Builder(this)
                         .setContentTitle("Run4Life")
                         .setTicker("Run4Life")
-                        .setContentText(FOREGROUND_TEXTVIEW)
+                        .setContentText(FOREGROUND_TEXTVIEW + (TotalDistance + distance_per_section)/1000)
                         .setSmallIcon(R.drawable.run4lifelogo24x24)
                         .setLargeIcon(
                                 Bitmap.createScaledBitmap(icon, 128, 128, false))
@@ -263,10 +263,10 @@ public final class MyService extends Service implements  GoogleApiClient.Connect
                 stopLocationUpdates();
                 stopForeground(true);
 
-                mAvgSpeed = ((TotalDistance + distance_per_section)/1000)/(getChronoTime()/3600000);
+                mAvgSpeed = 3.6*((TotalDistance + distance_per_section))/(getChronoTime()/1000);
 
                 //only save run in database if he actually moved his ass
-             if(mAvgSpeed >= 0 && (TotalDistance + distance_per_section)/1000 >0.1 )
+            if(mAvgSpeed >= 0 && (TotalDistance + distance_per_section)/1000 >0.1 )
              {
                  Run temp = new Run(mDateID, (TotalDistance + distance_per_section) / 1000, 0, mAvgSpeed, 0, getChronoTime());
                  dbHandler.saveRunSet(temp);
@@ -358,8 +358,10 @@ public final class MyService extends Service implements  GoogleApiClient.Connect
            {
                distance_per_section = tempdistance;
 
-              // builder.setContentText(FOREGROUND_TEXTVIEW);
-              // notification = builder.build();
+
+               builder.setContentText(FOREGROUND_TEXTVIEW + (TotalDistance + distance_per_section)/1000);
+               notification = builder.build();
+
                startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE,
                        notification);
                if (distance_per_section > 200) {

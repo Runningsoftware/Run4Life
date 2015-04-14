@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 
@@ -23,6 +24,9 @@ public class ReportActivity extends ActionBarActivity {
     protected Spinner spinner;
 
     ArrayList<Run> AllRuns;
+
+    DecimalFormat df = new DecimalFormat("####0.00");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,10 +70,11 @@ public class ReportActivity extends ActionBarActivity {
             String hh = h < 10 ? "0"+h: h+"";
             String mm = m < 10 ? "0"+m: m+"";
             String ss = s < 10 ? "0"+s: s+"";
-            mDistanceTextView.setText(String.valueOf(AllRuns.get(position).getDistance()) + " KM");
-            mAvgSpeedTextView.setText(String.valueOf(AllRuns.get(position).getAvgSpeed())+ " KM/Hr");
+
+            mDistanceTextView.setText((df.format(AllRuns.get(position).getDistance()) + " KM"));
+            mAvgSpeedTextView.setText((df.format(AllRuns.get(position).getAvgSpeed()))+ " KM/Hr");
             mDurationTextView.setText(hh+":"+mm+":"+ss);
-            mCalorietextView.setText(String.valueOf(AllRuns.get(position).getNetCalories()));
+            mCalorietextView.setText(df.format(AllRuns.get(position).getNetCalories()));
         }
 
         @Override

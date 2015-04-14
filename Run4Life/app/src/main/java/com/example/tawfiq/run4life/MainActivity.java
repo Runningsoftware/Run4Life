@@ -42,7 +42,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         db = openOrCreateDatabase("Run4Life", Context.MODE_PRIVATE, null);
         MyService.SetDataBase(db);
-
+        setupUI();
         Profile temp = MyService.getUser();
 
        if(temp == null)
@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
 
             MainActivity.this.startActivity(myIntent);
         }
-        setupUI();
+
 
     }
 
@@ -75,7 +75,8 @@ public class MainActivity extends Activity {
         mDurationChrono  = (Chronometer) findViewById(R.id.chronometer);
         mDurationChrono.setOnChronometerTickListener(mOnChronometerTickListener);
 
-        SettingsButton.setText(MyService.getUser().getName());
+        if(MyService.getUser()!= null)
+          SettingsButton.setText(MyService.getUser().getName());
 
     }
 
@@ -276,6 +277,7 @@ public class MainActivity extends Activity {
             String mm = m < 10 ? "0"+m: m+"";
             String ss = s < 10 ? "0"+s: s+"";
             chronometer.setText(hh+":"+mm+":"+ss);
+
         }
     };
 
