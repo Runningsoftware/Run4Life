@@ -10,6 +10,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.TextView;
 
 import com.example.tawfiq.run4life.MyService.Status;
@@ -31,12 +32,10 @@ public class MainActivity extends Activity {
     protected Button ReportViewButton = null;
 
     protected TextView mDistanceTextView;
-    protected TextView mAvgSpeedTextView;
-    protected TextView mDurationTextView;
 
 
-    protected boolean mRunning = false;
-    protected boolean mRunPaused = false;
+    protected Chronometer mDurationChrono;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,20 +43,18 @@ public class MainActivity extends Activity {
         db = openOrCreateDatabase("Run4Life", Context.MODE_PRIVATE, null);
         MyService.SetDataBase(db);
 
-        setupUI();
-
-
-       // Profile temp = new Profile("Tawfiq", 21,70,178,"M");
-       // MyService.saveProfile(temp);
         Profile temp = MyService.getUser();
+
        if(temp == null)
         {
             Intent myIntent = new Intent(MainActivity.this, ProfileActivity.class);
 
             MainActivity.this.startActivity(myIntent);
         }
+        setupUI();
 
     }
+
 
 
     protected void setupUI()
@@ -70,23 +67,29 @@ public class MainActivity extends Activity {
         StartPauseResumeButton.setOnClickListener(mOnClickStartPauseResumeListener);
         StopResetButton.setOnClickListener(mOnClickStopResetButtonListener);
         SettingsButton.setOnClickListener(mOnClickSettingsButtonListener);
-
+        ReportViewButton.setOnClickListener(mOnClickReportButtonListerner);
         mDistanceTextView = (TextView) findViewById(R.id.DistanceEditText);
-        mAvgSpeedTextView = (TextView) findViewById(R.id.AvgSpeedEditText);
-        mDurationTextView = (TextView) findViewById(R.id.DurationEditText);
-        mDistanceTextView.setKeyListener(null);
-        mAvgSpeedTextView.setKeyListener(null);
-        mDurationTextView.setKeyListener(null);
+
+
+
+        mDurationChrono  = (Chronometer) findViewById(R.id.chronometer);
+        mDurationChrono.setOnChronometerTickListener(mOnChronometerTickListener);
+
+        SettingsButton.setText(MyService.getUser().getName());
+
     }
+
 
     protected  void UpdateUI()
     {
         mStatus = MyService.getmStatus();
+
         if(mStatus == Status.NOT_STARTED)
         {
             StartPauseResumeButton.setText("Start");
             StopResetButton.setText("Stop");
             StopResetButton.setEnabled(false);
+            mDurationChrono.stop();
            // stopTimer();
         }
         else if(mStatus == Status.RUNNING)
@@ -94,6 +97,7 @@ public class MainActivity extends Activity {
             StartPauseResumeButton.setText("Pause");
             StopResetButton.setText("Stop");
             StopResetButton.setEnabled(true);
+            mDurationChrono.start();
             if(timer == null)
               startTimer();
         }
@@ -102,6 +106,7 @@ public class MainActivity extends Activity {
             StartPauseResumeButton.setText("Resume");
             StopResetButton.setText("Stop");
             StopResetButton.setEnabled(true);
+            mDurationChrono.start();
             if(timer == null)
                 startTimer();
         }
@@ -109,6 +114,8 @@ public class MainActivity extends Activity {
         {
             if(MyService.getTotalDistance()> 0)
                 stopTimer();
+
+            mDurationChrono.stop();
             StartPauseResumeButton.setText("Start");
             StopResetButton.setText("Stop");
             StopResetButton.setEnabled(false);
@@ -187,6 +194,7 @@ public class MainActivity extends Activity {
             if(timer == null)
                  startTimer();
 
+           // mDurationChrono.start();
 
             UpdateUI();
 
@@ -209,7 +217,7 @@ public class MainActivity extends Activity {
              startService(stopIntent);
 
             stopTimer();
-
+            //mDurationChrono.stop();
             UpdateUI();
 
         }
@@ -236,6 +244,39 @@ public class MainActivity extends Activity {
 
     };
 
+    private Button.OnClickListener  mOnClickReportButtonListerner = new Button.OnClickListener() {
 
+
+        @Override
+        public void onClick(View v) {
+
+
+
+
+            Intent myIntent = new Intent(MainActivity.this, ReportActivity.class);
+
+            MainActivity.this.startActivity(myIntent);
+
+
+
+        }
+
+
+
+    };
+
+    private Chronometer.OnChronometerTickListener mOnChronometerTickListener = new Chronometer.OnChronometerTickListener() {
+        @Override
+        public void onChronometerTick(Chronometer chronometer) {
+            long time = MyService.getChronoTime();
+            int h   = (int)(time /3600000);
+            int m = (int)(time - h*3600000)/60000;
+            int s= (int)(time - h*3600000- m*60000)/1000 ;
+            String hh = h < 10 ? "0"+h: h+"";
+            String mm = m < 10 ? "0"+m: m+"";
+            String ss = s < 10 ? "0"+s: s+"";
+            chronometer.setText(hh+":"+mm+":"+ss);
+        }
+    };
 
 }

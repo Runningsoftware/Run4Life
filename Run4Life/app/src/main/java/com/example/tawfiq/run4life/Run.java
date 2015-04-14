@@ -7,12 +7,23 @@ public class Run {
 	private double mTargetDistance; // targeted distance in KM.. if free run this = 0
 	private double mNetCalories;    //estimated calorie burn calculated at the end of the run
 	private double mAvgSpeed;   //average speed TotalDistance / Duration
-    private double mDuration;   //in seconds
+    private long mDuration;   //in seconds
 	private double mTargetAvgSpeed;
 	private double mScore;
 
-	//MyService mService = new MyService();
 
+	Run(String ID, double distance, double TargetDistance, double AvgSpeed, double targetAvgSpeed, long duration )
+    {
+        mDateID = ID;
+        mDistance = distance;
+        mTargetDistance = TargetDistance;
+        mAvgSpeed = AvgSpeed;
+        mTargetAvgSpeed = targetAvgSpeed;
+        mDuration = duration;
+        Calculate_net_calories_burned();
+    }
+
+    Run(){}
 
 	//More Running: (http://www.indiacurry.com/weightloss/walkingrunningcalories.htm) 
 
@@ -54,9 +65,9 @@ public class Run {
 		this.mAvgSpeed = mAvgSpeed;
 	}
 
-    public double getDuration(){return mDuration;}
+    public long getDuration(){return mDuration;}
 
-    public void setDuration(double duration){mDuration = duration;}
+    public void setDuration(long duration){mDuration = duration;}
 
 	public double getTargetAvgSpeed() {
 		return mTargetAvgSpeed;
@@ -77,10 +88,10 @@ public class Run {
 
 	// ----------------- methods
 	
-	//public double net_calories_burned(){
+	private void Calculate_net_calories_burned(){
 		
-	//	return  (2.20462)*(mService.getUser().getWeight()) *(0.63) *(0.621371)*(this.mDistance);
-	//}
+		mNetCalories =  (2.20462)*(MyService.getUser().getWeight()) *(0.63) *(0.621371)*(this.mDistance);
+	}
 	
 	
 	/*

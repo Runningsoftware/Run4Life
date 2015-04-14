@@ -107,7 +107,7 @@ public final class DBHandler   {
          {
 
              db.execSQL("INSERT INTO RunSets VALUES('" + mRun.getDateID() + "','" + mRun.getDistance() +
-                     "','" + mRun.getTargetDistance() + "','" + mRun.getAvgSpeed() + "','" + mRun.getTargetAvgSpeed() + "','" + mRun.getDuration() + "','" + mRun.getNetCalories() + "','" + mRun.getScore() + "' );");
+                     "','" + mRun.getTargetDistance() + "','" + mRun.getAvgSpeed() + "','" + mRun.getTargetAvgSpeed() + "','" +Long.toString(mRun.getDuration()) + "','" + mRun.getNetCalories() + "','" + mRun.getScore() + "' );");
              Log.i(TAG, "save run set");
          }
          catch(Exception e)
@@ -138,7 +138,7 @@ public final class DBHandler   {
                     temp.setTargetDistance((Double.parseDouble((cursor.getString(cursor.getColumnIndex("TargetDistance"))))));
                     temp.setAvgSpeed(Double.parseDouble(cursor.getString(cursor.getColumnIndex("AvgSpeed"))));
                     temp.setTargetAvgSpeed(Double.parseDouble(cursor.getString(cursor.getColumnIndex("TargetAvgSpeed"))));
-                    temp.setDuration(Double.parseDouble(cursor.getString(cursor.getColumnIndex("Duration"))));
+                    temp.setDuration(Long.parseLong(cursor.getString(cursor.getColumnIndex("Duration")),10));
                     temp.setNetCalories(Double.parseDouble(cursor.getString(cursor.getColumnIndex("NetCalories"))));
                     temp.setScore(Double.parseDouble(cursor.getString(cursor.getColumnIndex("Score"))));
                     RunsList.add(temp);

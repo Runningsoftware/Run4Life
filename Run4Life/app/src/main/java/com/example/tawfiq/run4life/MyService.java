@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -20,11 +21,15 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+
 
 public final class MyService extends Service implements  GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
@@ -77,15 +82,14 @@ public final class MyService extends Service implements  GoogleApiClient.Connect
      */
     protected static double TotalDistance = 0 ;
 
-    /**
-     * to keep track of when the running action is on.. location updating and distance being calculated
-     */
-    protected static boolean mRunning = false;
-    protected static boolean mRunPaused = false;
     protected boolean isLocationUpdating = false;
 
+    protected static long timeStartofRunSession = 0;
+    protected static long savedRunningTime = 0;
 
-    protected String FOREGROUND_TEXTVIEW = "Distance: " + (TotalDistance + distance_per_section);
+    protected String mDateID;
+    protected double mAvgSpeed =0;
+    protected String FOREGROUND_TEXTVIEW = "Distance: " + (TotalDistance + distance_per_section)/1000;
 
     public MyService()
     {
@@ -165,7 +169,10 @@ public final class MyService extends Service implements  GoogleApiClient.Connect
                 TotalDistance = 0;
                 distance_per_section = 0;
                 mCurrentLocation = null;
-                mCurrentLocation = null;
+                //get the date and time and assign it as an ID to the new DataSet
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                mDateID = sdf.format(new Date());
+
                 if(!isLocationUpdating)
                 {
                      //start requesting location update
@@ -188,6 +195,10 @@ public final class MyService extends Service implements  GoogleApiClient.Connect
                 notification = builder.build();
                 startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE,
                         notification);
+
+                //set time base
+                timeStartofRunSession = SystemClock.elapsedRealtime();
+                savedRunningTime = 0;
 
             }
             else if(mStatus == Status.RUNNING)
@@ -212,6 +223,9 @@ public final class MyService extends Service implements  GoogleApiClient.Connect
                         notification);
                 stopLocationUpdates();
 
+                //save time
+                savedRunningTime = savedRunningTime + (SystemClock.elapsedRealtime() - timeStartofRunSession);
+
             }
             else if(mStatus == Status.PAUSE)
             {
@@ -234,6 +248,8 @@ public final class MyService extends Service implements  GoogleApiClient.Connect
                         notification);
                 startLocationUpdates();
 
+                //set time base
+                timeStartofRunSession = SystemClock.elapsedRealtime();
             }
 
         }
@@ -241,13 +257,22 @@ public final class MyService extends Service implements  GoogleApiClient.Connect
         {
             if(mStatus != Status.FINISHED)
             {
-                mStatus = Status.FINISHED;
+
                 Log.i(TAG, "Clicked stop");
 
                 stopLocationUpdates();
                 stopForeground(true);
 
+                mAvgSpeed = ((TotalDistance + distance_per_section)/1000)/(getChronoTime()/3600000);
 
+                //only save run in database if he actually moved his ass
+             if(mAvgSpeed >= 0 && (TotalDistance + distance_per_section)/1000 >0.1 )
+             {
+                 Run temp = new Run(mDateID, (TotalDistance + distance_per_section) / 1000, 0, mAvgSpeed, 0, getChronoTime());
+                 dbHandler.saveRunSet(temp);
+
+             }
+                mStatus = Status.FINISHED;
             }
 
         }
@@ -436,7 +461,11 @@ public final class MyService extends Service implements  GoogleApiClient.Connect
             return 100.0;
     }
 
-    public static double getTotalDistance(){return TotalDistance + distance_per_section;}
+    public static double getTotalDistance()
+    {
+        DecimalFormat df = new DecimalFormat("####0.00");
+        return Double.valueOf(df.format((TotalDistance + distance_per_section)/1000));
+    }
 
     public static Status getmStatus(){
         Log.i(TAG, "calling getStatus");
@@ -461,6 +490,24 @@ public final class MyService extends Service implements  GoogleApiClient.Connect
        // dbHandler.create();
         dbHandler.saveProfile(user);
 
+    }
+
+
+
+    public static long getChronoTime()
+    {
+       if(mStatus == Status.NOT_STARTED || mStatus == Status.FINISHED )
+            return  0;
+       else if(mStatus == Status.RUNNING)
+           return  (SystemClock.elapsedRealtime() - timeStartofRunSession + savedRunningTime);
+       else
+           return savedRunningTime;
+
+    }
+
+    public static ArrayList<Run> loadAllRuns()
+    {
+        return dbHandler.loadAllRuns();
     }
 
 }

@@ -14,84 +14,40 @@
         android:layout_marginBottom="200dp"
         android:layout_marginTop="40dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Distance:"
-            android:id="@+id/DistanceTextView"
-            android:layout_alignBottom="@+id/DistanceEditText"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Average Speed:"
-            android:id="@+id/AvgSpeedtextView"
-            android:layout_below="@+id/DistanceTextView"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="33dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Duration:"
-            android:id="@+id/textView"
-            android:layout_below="@+id/AvgSpeedtextView"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="45dp" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/AvgSpeedEditText"
-            android:layout_above="@+id/textView"
-            android:layout_toLeftOf="@+id/editText2"
-            android:layout_alignLeft="@+id/DurationEditText"
-            android:layout_alignStart="@+id/DurationEditText" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/DurationEditText"
-            android:layout_alignBottom="@+id/textView"
-            android:layout_toLeftOf="@+id/editText2"
-            android:layout_toRightOf="@+id/AvgSpeedtextView"
-            android:layout_toEndOf="@+id/AvgSpeedtextView" />
-
-        <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/editText"
             android:text="Km"
-            android:layout_marginStart="80dp"
             android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/AvgSpeedtextView"
-            android:layout_toEndOf="@+id/AvgSpeedtextView"
-            android:layout_marginLeft="80dp" />
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="97dp"
+            android:layout_marginEnd="97dp"
+            android:textSize="45dp" />
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/editText2"
-            android:text="Km/H"
-            android:layout_alignTop="@+id/AvgSpeedEditText"
-            android:layout_alignLeft="@+id/editText"
-            android:layout_alignStart="@+id/editText" />
-
-        <EditText
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/DistanceEditText"
             android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/AvgSpeedtextView"
-            android:layout_toLeftOf="@+id/editText2"
-            android:layout_toStartOf="@+id/editText2" />
+            android:layout_toLeftOf="@+id/editText"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textSize="45dp" />
+
+        <Chronometer
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chronometer"
+            android:autoText="false"
+            android:textSize="45dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignRight="@+id/editText"
+            android:layout_alignEnd="@+id/editText" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -138,7 +94,7 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TJ"
+        android:text="Profile"
         android:id="@+id/SettingsButton"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
