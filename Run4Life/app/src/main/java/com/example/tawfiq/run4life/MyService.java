@@ -495,7 +495,12 @@ public final class MyService extends Service implements  GoogleApiClient.Connect
     }
 
 
-
+    public static void deleteRun(String ID)
+    {
+        if(dbHandler == null)
+            dbHandler = new DBHandler(db);
+        dbHandler.deleteRun(ID);
+    }
     public static long getChronoTime()
     {
        if(mStatus == Status.NOT_STARTED || mStatus == Status.FINISHED )

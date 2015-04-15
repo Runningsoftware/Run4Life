@@ -4,8 +4,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.example.tawfiq.run4life.ReportActivity">
-
+    tools:context="com.example.tawfiq.run4life.ReportActivity"
+    android:background="#8A2908">
 
     <Spinner
         android:layout_width="wrap_content"
@@ -14,6 +14,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:textColor="#ffffff"
        />
 
     <LinearLayout
@@ -38,6 +39,7 @@
                 android:id="@+id/textView"
                 android:layout_gravity="left"
                 android:layout_marginTop="20dp"
+                android:textColor="#ffffff"
                 android:textSize="30dp" />
 
             <TextView
@@ -48,6 +50,7 @@
                 android:id="@+id/textView2"
                 android:layout_gravity="left|top"
                 android:layout_marginTop="80dp"
+                android:textColor="#ffffff"
                 android:textSize="30dp" />
 
             <TextView
@@ -58,6 +61,7 @@
                 android:id="@+id/textView3"
                 android:layout_gravity="left|top"
                 android:textSize="30dp"
+                android:textColor="#ffffff"
                 android:layout_marginTop="140dp" />
 
             <TextView
@@ -68,7 +72,15 @@
                 android:id="@+id/textView6"
                 android:layout_gravity="left|top"
                 android:textSize="30dp"
+                android:textColor="#ffffff"
                 android:layout_marginTop="200dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="delete"
+                android:id="@+id/deletebutton"
+                android:layout_gravity="left|bottom" />
         </FrameLayout>
 
         <FrameLayout
@@ -83,6 +95,7 @@
                 android:id="@+id/distanceTextView"
                 android:layout_gravity="left|top"
                 android:layout_marginTop="20dp"
+                android:textColor="#ffffff"
                 android:textSize="30dp" />
 
             <TextView
@@ -92,6 +105,7 @@
                 android:id="@+id/TimeTextView"
                 android:layout_gravity="left|top"
                 android:layout_marginTop="80dp"
+                android:textColor="#ffffff"
                 android:textSize="30dp" />
 
             <TextView
@@ -102,6 +116,7 @@
                 android:id="@+id/AvgSpeedTextView"
                 android:layout_gravity="left|top"
                 android:layout_marginTop="140dp"
+                android:textColor="#ffffff"
                 android:textSize="30dp" />
 
             <TextView
@@ -111,6 +126,7 @@
                 android:id="@+id/CaloriesTextView"
                 android:layout_gravity="left|top"
                 android:layout_marginTop="200dp"
+                android:textColor="#ffffff"
                 android:textSize="30dp" />
         </FrameLayout>
     </LinearLayout>

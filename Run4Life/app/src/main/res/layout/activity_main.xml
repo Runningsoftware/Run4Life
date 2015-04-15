@@ -3,8 +3,8 @@
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
-
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
+    android:background="#8A2908">
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -15,11 +15,13 @@
         android:layout_marginTop="40dp">
 
 
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/editText"
             android:text="Km"
+            android:textColor="#ffffff"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
@@ -31,6 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/DistanceEditText"
+            android:textColor="#ffffff"
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@+id/editText"
             android:layout_alignParentLeft="true"
@@ -43,6 +46,7 @@
             android:id="@+id/chronometer"
             android:autoText="false"
             android:textSize="45dp"
+            android:textColor="#ffffff"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
@@ -67,6 +71,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+
             android:layout_toLeftOf="@+id/ViewReportButton"
             android:layout_toStartOf="@+id/ViewReportButton" />
 
@@ -78,6 +83,7 @@
             android:layout_alignBottom="@+id/StartPauseResumeButton"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
+
             android:layout_toRightOf="@+id/ViewReportButton"
             android:layout_toEndOf="@+id/ViewReportButton" />
 
@@ -86,6 +92,7 @@
             android:layout_height="wrap_content"
             android:text="View Report"
             android:id="@+id/ViewReportButton"
+
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true" />
     </RelativeLayout>
@@ -96,6 +103,7 @@
         android:layout_height="wrap_content"
         android:text="Profile"
         android:id="@+id/SettingsButton"
+
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />

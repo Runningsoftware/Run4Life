@@ -116,6 +116,17 @@ public final class DBHandler   {
          }
      }
 
+    public void deleteRun(String ID)
+    {
+    try
+    {
+    db.execSQL("DELETE  FROM RunSets WHERE DateID = '"+ID+"' ;") ;
+    }
+    catch(Exception e)
+    {
+        Log.i(TAG, "delete run" + e.toString());
+    }
+    }
 	/**
 	 *load all the runs from database
      * return a list of Run objects

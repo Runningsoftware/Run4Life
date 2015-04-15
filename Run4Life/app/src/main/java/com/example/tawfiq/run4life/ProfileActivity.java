@@ -165,6 +165,12 @@ public class ProfileActivity extends ActionBarActivity {
         {
             if(mAgeEditText.getText().toString().equals("") || mWeightEditText.getText().toString().equals("")||mHeightEditText.getText().toString().equals("")||mNameEditText.getText().toString().equals(""))
                 displayToast("Insert all correct information!");
+            else if(Integer.parseInt(mAgeEditText.getText().toString()) > 120 || Integer.parseInt(mAgeEditText.getText().toString()) < 13 )
+                displayToast("Insert correct age!");
+            else if(Integer.parseInt(mHeightEditText.getText().toString()) > 272 || Integer.parseInt(mHeightEditText.getText().toString()) < 52 )
+                displayToast("Insert correct height!");
+            else if (Integer.parseInt(mWeightEditText.getText().toString())> 400 || Integer.parseInt(mWeightEditText.getText().toString()) < 30 )
+                displayToast("Insert correct weight!");
             else
             {
                 //Profile temp = new Profile("Tawfiq", 21,70,178,"F");

@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -23,6 +24,8 @@ public class ReportActivity extends ActionBarActivity {
 
     protected Spinner spinner;
 
+    protected Button deleteButton;
+
     ArrayList<Run> AllRuns;
 
     DecimalFormat df = new DecimalFormat("####0.00");
@@ -38,8 +41,9 @@ public class ReportActivity extends ActionBarActivity {
         mCalorietextView = (TextView) findViewById(R.id.CaloriesTextView);
 
         spinner = (Spinner) findViewById(R.id.spinner);
+        deleteButton = (Button) findViewById(R.id.deletebutton);
+        deleteButton.setOnClickListener(mOnClickListenerDeleteButton);
 
-        AllRuns = MyService.loadAllRuns();
         loadSpinner();
         spinner.setOnItemSelectedListener(mOnItemSelectedListener);
 
@@ -47,6 +51,8 @@ public class ReportActivity extends ActionBarActivity {
 
     protected  void loadSpinner()
     {
+
+        AllRuns = MyService.loadAllRuns();
         ArrayList<String> AllRunsID = new ArrayList<>();
         for(int i = 0 ; i < AllRuns.size() ; i++)
             AllRunsID.add(AllRuns.get(i).getDateID());
@@ -54,6 +60,21 @@ public class ReportActivity extends ActionBarActivity {
                 android.R.layout.simple_spinner_item, AllRunsID);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
+
+        if(AllRuns.size() == 0)
+        {
+            mDistanceTextView.setText((df.format(0) + " KM"));
+            mAvgSpeedTextView.setText((df.format(0)) + " KM/Hr");
+            mDurationTextView.setText("00" + ":" + "00" + ":" + "00");
+            mCalorietextView.setText(df.format(0));
+            deleteButton.setEnabled(false);
+            deleteButton.setVisibility(View.GONE);
+        }
+        else
+        {
+            deleteButton.setEnabled(true);
+            deleteButton.setVisibility(View.VISIBLE);
+        }
     }
 
     private Spinner.OnItemSelectedListener mOnItemSelectedListener = new Spinner.OnItemSelectedListener() {
@@ -63,18 +84,22 @@ public class ReportActivity extends ActionBarActivity {
 
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            long time = AllRuns.get(position).getDuration();
-            int h   = (int)(time /3600000);
-            int m = (int)(time - h*3600000)/60000;
-            int s= (int)(time - h*3600000- m*60000)/1000 ;
-            String hh = h < 10 ? "0"+h: h+"";
-            String mm = m < 10 ? "0"+m: m+"";
-            String ss = s < 10 ? "0"+s: s+"";
+            if(AllRuns.size()>0)
+            {
+                long time = AllRuns.get(position).getDuration();
+                int h = (int) (time / 3600000);
+                int m = (int) (time - h * 3600000) / 60000;
+                int s = (int) (time - h * 3600000 - m * 60000) / 1000;
+                String hh = h < 10 ? "0" + h : h + "";
+                String mm = m < 10 ? "0" + m : m + "";
+                String ss = s < 10 ? "0" + s : s + "";
 
-            mDistanceTextView.setText((df.format(AllRuns.get(position).getDistance()) + " KM"));
-            mAvgSpeedTextView.setText((df.format(AllRuns.get(position).getAvgSpeed()))+ " KM/Hr");
-            mDurationTextView.setText(hh+":"+mm+":"+ss);
-            mCalorietextView.setText(df.format(AllRuns.get(position).getNetCalories()));
+                mDistanceTextView.setText((df.format(AllRuns.get(position).getDistance()) + " KM"));
+                mAvgSpeedTextView.setText((df.format(AllRuns.get(position).getAvgSpeed())) + " KM/Hr");
+                mDurationTextView.setText(hh + ":" + mm + ":" + ss);
+                mCalorietextView.setText(df.format(AllRuns.get(position).getNetCalories()));
+            }
+
         }
 
         @Override
@@ -103,4 +128,19 @@ public class ReportActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private Button.OnClickListener  mOnClickListenerDeleteButton= new Button.OnClickListener() {
+
+
+        @Override
+        public void onClick(View v) {
+
+            if(spinner.getSelectedItem() != null)
+                MyService.deleteRun(spinner.getSelectedItem().toString());
+            loadSpinner();
+        }
+
+
+
+    };
 }
